@@ -10,5 +10,6 @@ fn main() {
 }
 
 fn square(num: i32) -> i32 {
-    num * num
+    let c=num*num;
+    c
 }
