@@ -506,6 +506,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "pi"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c91ab6fdbd2dd97398e973864a4853626fc6a1e113c711d79ca435e732d42084"
+
+[[package]]
 name = "pin-project-lite"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -619,6 +625,7 @@ dependencies = [
  "home",
  "indicatif",
  "notify",
+ "pi",
  "predicates",
  "regex",
  "serde",
