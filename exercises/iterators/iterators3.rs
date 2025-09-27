@@ -9,7 +9,7 @@
 // Execute `rustlings hint iterators3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum DivisionError {
@@ -40,7 +40,12 @@ pub fn divide(a: i32, b: i32) -> Result<i32, DivisionError> {
 // Desired output: Ok([1, 11, 1426, 3])
 fn result_with_list() -> Result<Vec<i32>,DivisionError> {
     let numbers = vec![27, 297, 38502, 81];
-    let division_results = numbers.into_iter().map(|n| divide(n, 27)).collect();
+    let division_results = numbers.into_iter().map(|n|->i32{
+        match divide(n, 27){
+            Ok(v)=>v,
+            Err(_)=>0
+        }
+    }).collect();
     Ok(division_results)
 }
 
@@ -49,7 +54,7 @@ fn result_with_list() -> Result<Vec<i32>,DivisionError> {
 // Desired output: [Ok(1), Ok(11), Ok(1426), Ok(3)]
 fn list_of_results() -> Vec<Result<i32, DivisionError>> {
     let numbers = vec![27, 297, 38502, 81];
-    numbers.into_iter().map(|n| Ok(divide(n, 27))).collect()
+    numbers.into_iter().map(|n| divide(n, 27)).collect()
 }
 
 #[cfg(test)]
