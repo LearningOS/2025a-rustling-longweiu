@@ -10,16 +10,24 @@
 // Execute `rustlings hint using_as` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 fn average(values: &[f64]) -> f64 {
+    if values.is_empty() {
+        return 0.0; // 或者根据需求返回其他值，如 f64::NAN
+    }
+    
     let total = values.iter().sum::<f64>();
-    total / values.len()
+    total / values.len() as f64
 }
 
 fn main() {
     let values = [3.5, 0.3, 13.0, 11.7];
     println!("{}", average(&values));
+    
+    // 测试空数组的情况
+    let empty_values: [f64; 0] = [];
+    println!("{}", average(&empty_values));
 }
 
 #[cfg(test)]
@@ -29,5 +37,10 @@ mod tests {
     #[test]
     fn returns_proper_type_and_value() {
         assert_eq!(average(&[3.5, 0.3, 13.0, 11.7]), 7.125);
+    }
+    
+    #[test]
+    fn empty_array() {
+        assert_eq!(average(&[]), 0.0);
     }
 }
