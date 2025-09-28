@@ -3,7 +3,7 @@
 // Execute `rustlings hint threads3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 use std::sync::mpsc;
 use std::sync::Arc;
@@ -30,22 +30,31 @@ fn send_tx(q: Queue, tx: mpsc::Sender<u32>) -> () {
     let qc = Arc::new(q);
     let qc1 = Arc::clone(&qc);
     let qc2 = Arc::clone(&qc);
+    
+    // 克隆发送端用于两个线程
+    let tx1 = tx.clone();
+    let tx2 = tx.clone();
 
-    thread::spawn(move || {
+    let handle1 = thread::spawn(move || {
         for val in &qc1.first_half {
             println!("sending {:?}", val);
-            tx.send(*val).unwrap();
+            tx1.send(*val).unwrap();
             thread::sleep(Duration::from_secs(1));
         }
     });
 
-    thread::spawn(move || {
+    let handle2 = thread::spawn(move || {
         for val in &qc2.second_half {
             println!("sending {:?}", val);
-            tx.send(*val).unwrap();
+            tx2.send(*val).unwrap();
             thread::sleep(Duration::from_secs(1));
         }
     });
+
+    // 等待两个发送线程完成
+    handle1.join().unwrap();
+    handle2.join().unwrap();
+    // 函数返回时，原始的tx也会被丢弃
 }
 
 fn main() {
@@ -53,10 +62,10 @@ fn main() {
     let queue = Queue::new();
     let queue_length = queue.length;
 
-    send_tx(queue, tx);
+    send_tx(queue, tx); // 函数返回后所有发送端都被丢弃
 
     let mut total_received: u32 = 0;
-    for received in rx {
+    for received in rx { // 当所有发送端被丢弃后，循环会自动退出
         println!("Got: {}", received);
         total_received += 1;
     }
